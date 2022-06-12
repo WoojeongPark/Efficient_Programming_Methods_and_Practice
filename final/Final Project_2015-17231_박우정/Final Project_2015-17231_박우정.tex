@@ -1,0 +1,1300 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    \usepackage{kotex}
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Final Project\_2015-17231\_박우정}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}1. k\PYZhy{}means clustering}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} initialization. k와 max\PYZus{}iteration I, r\PYZus{}nk}
+\PY{n}{k}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{number of cluster?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{number of max\PYZus{}iteration?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}import library}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}read data.csv}
+\PY{n}{data1}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data1.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{data2}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data2.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{data3}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data3.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}모두 120 * 2 matrix}
+\PY{n}{x1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{}coordinates 별로 저장}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x1}\PY{p}{,}\PY{n}{y1}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x2}\PY{p}{,}\PY{n}{y2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x3}\PY{p}{,}\PY{n}{y3}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{All the scatter plots of data1(red), data2(green), and data3(blue)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}declare functions}
+\PY{k}{def} \PY{n+nf}{dist}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{}Euclidean norm}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{b}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}k를 받고, initial points로부터 k개의 중심 c1, c2, c3, ..., ck를 리턴하는 함수}
+    \PY{n}{centroids} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{centroids}\PY{p}{)}
+    \PY{k}{return} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{n}{k}\PY{p}{]}
+
+\PY{k}{def} \PY{n+nf}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Euclidean norm을 거리로 하는 distance를 주고, 그것이 최소가 되게 하는 중심좌표 index 반환.}
+    \PY{n}{distances} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{data} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}np.newaxis를 통해 각 data안의 성분들에 고정된 centroids가 모두 빼지도록 한다.}
+    \PY{c+c1}{\PYZsh{}np.newaxis는 차원을 확장하는 함수. 가령, [1,2,3,4] \PYZhy{}\PYZgt{} [[1,2,3,4]] \PYZhy{}\PYZgt{} [[1][2][3][4]] 이런 방식으로 확장.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{distances}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}closest\PYZus{}centroid(data3,centroids) \PYZsh{}출력된 값은 c\PYZus{}0, c\PYZus{}1, ..., c\PYZus{}(k\PYZhy{}1)의 index 0 1 2 ... k\PYZhy{}1 중 하나이다. 가까운 index 반환}
+
+\PY{k}{def} \PY{n+nf}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}위에서 구한 index들끼리 모아서 새로운 centroid를 구한다.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{data}\PY{p}{[}\PY{n}{closest}\PY{o}{==}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{centroids}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}data 1}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{centroids} \PY{o}{=} \PY{n}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{k}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{n}{closest} \PY{o}{=} \PY{n}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{n}{ncentroids} \PY{o}{=} \PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{k}{if}\PY{p}{(}\PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{\PYZca{}}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{o+ow}{or} \PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The iteration number of data 1 is: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{i}\PY{p}{)}
+        \PY{k}{break}\PY{p}{;}
+    \PY{n}{centroids}\PY{o}{=}\PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data 1 k\PYZhy{}means clustering result with error=10\PYZca{}\PYZhy{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The coordinates of centroids of data1 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The clusters of data1 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{closest}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+number of cluster?4
+number of max\_iteration?1000
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_0_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+
+
+The iteration number of data 1 is:  3
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_0_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+The coordinates of centroids of data1 is:
+ [[  7.46629799  54.81537825]
+ [-44.70775134 -38.82388583]
+ [ 43.20121589 -39.51006513]
+ [-26.23140434 -54.33709625]]
+The clusters of data1 is:
+ [2 1 1 3 0 1 1 2 3 1 1 2 1 2 2 1 1 3 3 1 1 1 1 3 1 1 1 1 3 2 0 1 3 1 0 1 3
+ 1 0 1 3 1 0 1 0 1 3 1 0 1 0 1 3 0 3 1 0 3 2 3 0 2 0 1 1 1 3 3 2 1 1 3 0 2
+ 1 1 0 2 0 1 1 2 0 1 3 1 0 1 1 0 3 0 1 3 1 1 0 0 2 1 1 2 2 1 2 1 1 1 2 3 1
+ 1 2 2 3 0 3 1 3 3]
+
+
+
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}1. k\PYZhy{}means clustering}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} initialization. k와 max\PYZus{}iteration I, r\PYZus{}nk}
+\PY{n}{k}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{number of cluster?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{number of max\PYZus{}iteration?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}import library}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}read data.csv}
+\PY{n}{data1}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data1.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{data2}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data2.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{data3}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data3.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}모두 120 * 2 matrix}
+\PY{n}{x1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{}coordinates 별로 저장}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x1}\PY{p}{,}\PY{n}{y1}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x2}\PY{p}{,}\PY{n}{y2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x3}\PY{p}{,}\PY{n}{y3}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{All the scatter plots of data1(red), data2(green), and data3(blue)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}declare functions}
+\PY{k}{def} \PY{n+nf}{dist}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{}Euclidean norm}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{b}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}k를 받고, initial points로부터 k개의 중심 c1, c2, c3, ..., ck를 리턴하는 함수}
+    \PY{n}{centroids} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{centroids}\PY{p}{)}
+    \PY{k}{return} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{n}{k}\PY{p}{]}
+
+\PY{k}{def} \PY{n+nf}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Euclidean norm을 거리로 하는 distance를 주고, 그것이 최소가 되게 하는 중심좌표 index 반환.}
+    \PY{n}{distances} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{data} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}np.newaxis를 통해 각 data안의 성분들에 고정된 centroids가 모두 빼지도록 한다.}
+    \PY{c+c1}{\PYZsh{}np.newaxis는 차원을 확장하는 함수. 가령, [1,2,3,4] \PYZhy{}\PYZgt{} [[1,2,3,4]] \PYZhy{}\PYZgt{} [[1][2][3][4]] 이런 방식으로 확장.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{distances}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}closest\PYZus{}centroid(data3,centroids) \PYZsh{}출력된 값은 c\PYZus{}0, c\PYZus{}1, ..., c\PYZus{}(k\PYZhy{}1)의 index 0 1 2 ... k\PYZhy{}1 중 하나이다. 가까운 index 반환}
+
+\PY{k}{def} \PY{n+nf}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}위에서 구한 index들끼리 모아서 새로운 centroid를 구한다.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{data}\PY{p}{[}\PY{n}{closest}\PY{o}{==}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{centroids}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}data 2}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{centroids} \PY{o}{=} \PY{n}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{k}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{n}{closest} \PY{o}{=} \PY{n}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{n}{ncentroids} \PY{o}{=} \PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{k}{if}\PY{p}{(}\PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{\PYZca{}}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{o+ow}{or} \PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The iteration number of data 2 is: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{i}\PY{p}{)}
+        \PY{k}{break}\PY{p}{;}
+    \PY{n}{centroids}\PY{o}{=}\PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data 2 k\PYZhy{}means clustering result with error=10\PYZca{}\PYZhy{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The coordinates of centroids of data2 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The clusters of data1 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{closest}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+number of cluster?6
+number of max\_iteration?1000
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_1_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+
+
+The iteration number of data 2 is:  1
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_1_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+The coordinates of centroids of data2 is:
+ [[-40.69362868  26.77287789]
+ [ 40.29056533  31.42481471]
+ [  5.23192998  10.58650307]
+ [ -5.35294772  50.73166275]
+ [ 12.12524292 -32.66803269]
+ [-23.14794187 -22.33230429]]
+
+
+
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}1. k\PYZhy{}means clustering}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} initialization. k와 max\PYZus{}iteration I, r\PYZus{}nk}
+\PY{n}{k}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{number of cluster?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{number of max\PYZus{}iteration?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}import library}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}read data.csv}
+\PY{n}{data1}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data1.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{data2}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data2.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{data3}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data3.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}모두 120 * 2 matrix}
+\PY{n}{x1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{}coordinates 별로 저장}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x1}\PY{p}{,}\PY{n}{y1}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x2}\PY{p}{,}\PY{n}{y2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x3}\PY{p}{,}\PY{n}{y3}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{All the scatter plots of data1(red), data2(green), and data3(blue)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}declare functions}
+\PY{k}{def} \PY{n+nf}{dist}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{}Euclidean norm}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{b}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}k를 받고, initial points로부터 k개의 중심 c1, c2, c3, ..., ck를 리턴하는 함수}
+    \PY{n}{centroids} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{centroids}\PY{p}{)}
+    \PY{k}{return} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{n}{k}\PY{p}{]}
+
+\PY{k}{def} \PY{n+nf}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Euclidean norm을 거리로 하는 distance를 주고, 그것이 최소가 되게 하는 중심좌표 index 반환.}
+    \PY{n}{distances} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{data} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}np.newaxis를 통해 각 data안의 성분들에 고정된 centroids가 모두 빼지도록 한다.}
+    \PY{c+c1}{\PYZsh{}np.newaxis는 차원을 확장하는 함수. 가령, [1,2,3,4] \PYZhy{}\PYZgt{} [[1,2,3,4]] \PYZhy{}\PYZgt{} [[1][2][3][4]] 이런 방식으로 확장.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{distances}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}closest\PYZus{}centroid(data3,centroids) \PYZsh{}출력된 값은 c\PYZus{}0, c\PYZus{}1, ..., c\PYZus{}(k\PYZhy{}1)의 index 0 1 2 ... k\PYZhy{}1 중 하나이다. 가까운 index 반환}
+
+\PY{k}{def} \PY{n+nf}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}위에서 구한 index들끼리 모아서 새로운 centroid를 구한다.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{data}\PY{p}{[}\PY{n}{closest}\PY{o}{==}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{centroids}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}data 3}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{centroids} \PY{o}{=} \PY{n}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{k}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{n}{closest} \PY{o}{=} \PY{n}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{n}{ncentroids} \PY{o}{=} \PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{k}{if}\PY{p}{(}\PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{\PYZca{}}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{o+ow}{or} \PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The iteration number of data3 is: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{i}\PY{p}{)}
+        \PY{k}{break}\PY{p}{;}
+    \PY{n}{centroids}\PY{o}{=}\PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data 3 k\PYZhy{}means clustering result with error=10\PYZca{}\PYZhy{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The coordinates of centroids of data3 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The clusters of data1 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{closest}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+number of cluster?6
+number of max\_iteration?1000
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_2_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+
+
+The iteration number of data3 is:  6
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_2_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+The coordinates of centroids of data3 is:
+ [[-50.95008522 -20.46132768]
+ [-11.50396023  49.98153678]
+ [ 51.14102688  11.88825836]
+ [-31.02680348  25.77939495]
+ [ 21.82375815 -40.63277086]
+ [ -6.32328949 -40.99479766]]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}2. LBG clustering}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{} initialization. k와 max\PYZus{}iteration I, r\PYZus{}nk}
+\PY{n}{epsilon}\PY{o}{=}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{error?(10\PYZca{}\PYZhy{}3 recommended)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{number of max\PYZus{}iteration?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+
+
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}import library}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}read data.csv}
+\PY{n}{data1}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data1.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{data2}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data2.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{data3}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data3.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}모두 120 * 2 matrix}
+\PY{n}{x1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y1}\PY{o}{=}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y2}\PY{o}{=}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{x3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{y3}\PY{o}{=}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{}coordinates 별로 저장}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x1}\PY{p}{,}\PY{n}{y1}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x2}\PY{p}{,}\PY{n}{y2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x3}\PY{p}{,}\PY{n}{y3}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{All the scatter plots of data1(red), data2(green), and data3(blue)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}declare functions}
+\PY{k}{def} \PY{n+nf}{dist}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{}Euclidean norm}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{b}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}k를 받고, initial points로부터 k개의 중심 c1, c2, c3, ..., ck를 리턴하는 함수}
+    \PY{n}{centroids} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{centroids}\PY{p}{)}
+    \PY{k}{return} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{n}{k}\PY{p}{]}
+
+\PY{k}{def} \PY{n+nf}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Euclidean norm을 거리로 하는 distance를 주고, 그것이 최소가 되게 하는 중심좌표 index 반환.}
+    \PY{n}{distances} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{data} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}np.newaxis를 통해 각 data안의 성분들에 고정된 centroids가 모두 빼지도록 한다.}
+    \PY{c+c1}{\PYZsh{}np.newaxis는 차원을 확장하는 함수. 가령, [1,2,3k4] \PYZhy{}\PYZgt{} [[1,2,3,4]] \PYZhy{}\PYZgt{} [[1][2][3][4]] 이런 방식으로 확장.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{distances}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}closest\PYZus{}centroid(data3,centroids) \PYZsh{}출력된 값은 c\PYZus{}0, c\PYZus{}1, ..., c\PYZus{}(k\PYZhy{}1)의 index 0 1 2 ... k\PYZhy{}1 중 하나이다. 가까운 index 반환}
+
+\PY{k}{def} \PY{n+nf}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}위에서 구한 index들끼리 모아서 새로운 centroid를 구한다.}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{data}\PY{p}{[}\PY{n}{closest}\PY{o}{==}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{centroids}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}data 1}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} start at k\PYZus{}1=1}
+
+\PY{n}{k\PYZus{}1}\PY{o}{=}\PY{l+m+mi}{1}
+
+\PY{n}{centroids} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{data1}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}초기 중심은 무게중심.}
+\PY{n}{distance} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data1} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}120개 거리만을 적은 벡터. 가장 가까운 것을 찾자.}
+\PY{n}{add\PYZus{}centroids}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{data1}\PY{p}{[}\PY{n}{distance}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}가장 가까운 것.}
+
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{n}{centroids}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{centroids}\PY{p}{,} \PY{n}{add\PYZus{}centroids}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}둘을 결합하여 중심 2개 집합 생성}
+    \PY{n}{D\PYZus{}old} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data1} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+        \PY{n}{closest} \PY{o}{=} \PY{n}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+        \PY{n}{ncentroids} \PY{o}{=} \PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+        \PY{k}{if}\PY{p}{(}\PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{\PYZca{}}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{o+ow}{or} \PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}print(\PYZdq{}The iteration number of data 1 is: \PYZdq{}, i)}
+            \PY{k}{break}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{centroids}\PY{o}{=}\PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{n}{D\PYZus{}new} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data1} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+    \PY{n}{error}\PY{o}{=}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{D\PYZus{}new}\PY{o}{\PYZhy{}}\PY{n}{D\PYZus{}old}\PY{p}{)}\PY{o}{/}\PY{n}{D\PYZus{}new}
+    \PY{k}{if}\PY{p}{(}\PY{p}{(}\PY{n}{D\PYZus{}new}\PY{o}{\PYZhy{}}\PY{n}{D\PYZus{}old}\PY{p}{)}\PY{o}{/}\PY{n}{D\PYZus{}new}\PY{o}{\PYZlt{}}\PY{n}{epsilon} \PY{o+ow}{or} \PY{n}{D\PYZus{}new}\PY{o}{==}\PY{l+m+mi}{0} \PY{o+ow}{or} \PY{n}{k\PYZus{}1}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{120}\PY{p}{)}\PY{p}{:}
+        \PY{k}{break}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{k\PYZus{}1}\PY{o}{=}\PY{n}{k\PYZus{}1}\PY{o}{*}\PY{l+m+mi}{2}
+        \PY{n}{add\PYZus{}centroids}\PY{o}{=}\PY{n}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{k\PYZus{}1}\PY{p}{)}
+        \PY{k}{continue}
+        
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data 1 k\PYZhy{}means clustering result with error=10\PYZca{}\PYZhy{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The optimized number of clusters is: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{k\PYZus{}1}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The coordinates of centroids of data1 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The clusters of data1 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{closest}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+error?(10\^{}-3 recommended)0.001
+number of max\_iteration?100
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_3_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_3_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+The optimized number of clusters is:
+ 8
+The coordinates of centroids of data1 is:
+ [[ 10.83772994  51.25822119]
+ [-45.16020636 -43.1610801 ]
+ [-34.80421915 -59.10501084]
+ [ 43.20121589 -39.51006513]
+ [-26.57143019 -29.60545592]
+ [-18.64096929 -51.89151336]
+ [-50.90584589 -17.90676474]
+ [ -7.70514581  70.82258502]]
+The clusters of data1 is:
+ [3 1 1 2 7 1 6 3 2 1 1 3 4 3 3 1 1 5 4 1 1 1 1 2 1 1 1 1 2 3 7 1 5 6 0 1 2
+ 1 0 1 5 1 0 1 7 1 5 1 0 4 0 1 5 7 5 1 0 5 3 5 0 3 0 1 1 1 2 5 3 1 6 2 0 3
+ 4 1 0 3 0 1 6 3 0 1 5 1 0 6 1 0 2 0 6 2 6 1 0 0 3 1 4 3 3 2 3 1 1 1 3 2 1
+ 1 3 3 5 0 2 1 4 2]
+
+
+
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}data 2}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} start at k\PYZus{}2=1}
+
+\PY{n}{k\PYZus{}2}\PY{o}{=}\PY{l+m+mi}{1}
+
+\PY{n}{centroids} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{data2}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}초기 중심은 무게중심.}
+\PY{n}{distance} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data2} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}120개 거리만을 적은 벡터. 가장 가까운 것을 찾자.}
+\PY{n}{add\PYZus{}centroids}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{data2}\PY{p}{[}\PY{n}{distance}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}가장 가까운 것.}
+
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{n}{centroids}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{centroids}\PY{p}{,} \PY{n}{add\PYZus{}centroids}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}둘을 결합하여 중심 2개 집합 생성}
+    \PY{n}{D\PYZus{}old} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data2} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+        \PY{n}{closest} \PY{o}{=} \PY{n}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+        \PY{n}{ncentroids} \PY{o}{=} \PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+        \PY{k}{if}\PY{p}{(}\PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{\PYZca{}}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{o+ow}{or} \PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}print(\PYZdq{}The iteration number of data 1 is: \PYZdq{}, i)}
+            \PY{k}{break}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{centroids}\PY{o}{=}\PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{n}{D\PYZus{}new} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data2} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+    \PY{n}{error}\PY{o}{=}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{D\PYZus{}new}\PY{o}{\PYZhy{}}\PY{n}{D\PYZus{}old}\PY{p}{)}\PY{o}{/}\PY{n}{D\PYZus{}new}
+    \PY{k}{if}\PY{p}{(}\PY{p}{(}\PY{n}{D\PYZus{}new}\PY{o}{\PYZhy{}}\PY{n}{D\PYZus{}old}\PY{p}{)}\PY{o}{/}\PY{n}{D\PYZus{}new}\PY{o}{\PYZlt{}}\PY{n}{epsilon} \PY{o+ow}{or} \PY{n}{D\PYZus{}new}\PY{o}{==}\PY{l+m+mi}{0} \PY{o+ow}{or} \PY{n}{k\PYZus{}2}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{120}\PY{p}{)}\PY{p}{:}
+        \PY{k}{break}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{k\PYZus{}2}\PY{o}{=}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k\PYZus{}2}
+        \PY{n}{add\PYZus{}centroids}\PY{o}{=}\PY{n}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data2}\PY{p}{,} \PY{n}{k\PYZus{}2}\PY{p}{)}
+        \PY{k}{continue}
+        
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data 2 k\PYZhy{}means clustering result with error=10\PYZca{}\PYZhy{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The optimized number of clusters is: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{k\PYZus{}2}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The coordinates of centroids of data2 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The clusters of data2 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{closest}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+The optimized number of clusters is:
+ 8
+The coordinates of centroids of data2 is:
+ [[ 11.57463154  18.02447884]
+ [ -5.35294772  50.73166275]
+ [-40.69362868  26.77287789]
+ [ 12.12524292 -32.66803269]
+ [-23.14794187 -22.33230429]
+ [  2.62094678   7.49833923]
+ [ 42.91385454  29.73755941]
+ [ 35.75965734  35.33087055]]
+The clusters of data2 is:
+ [1 3 0 6 5 7 4 2 3 1 3 4 2 3 2 0 3 3 1 1 7 6 5 6 3 4 0 3 1 6 2 6 3 2 7 3 6
+ 3 3 5 2 3 5 3 3 1 2 0 1 3 3 6 1 3 3 3 3 5 3 1 3 2 4 4 3 3 5 3 0 3 2 3 3 5
+ 1 3 3 6 6 5 7 4 7 5 3 3 2 2 1 2 0 7 5 4 3 6 1 2 3 5 2 1 6 2 5 2 4 6 3 0 3
+ 5 4 3 3 4 3 3 5 4 1 3 6 1 5 6 5 3 2 3 4 1 6 3 5 6 2 4 3 2 3 0 2 3 4 0 7 2
+ 5 3 2 3 2 3 1 6 4 4 5 6 3 3 4 2 4 2 2 1 3 3 0 2 0 4 7 5 3 1 2 1 1 5 3 5 2
+ 4 3 7 5 3 0 6 3 4 5 6 2 3 3 4 3 4 3 6 2 2 4 2 3 5 4 1 2 3 5 3 3 3 6 3 5 3
+ 3 2 1 4 5 5 2 3 3 3 5 3 3 1 5 4 2 5 5 5 6 0 0 4 2 3 2 1 0 3 1 5 2 4 5 5 3
+ 3 6 7 5 3 6 0 1 5 6 3 7 1 5 2 4 0 3 3 0 2 3 5 6 4 4 5 3 2 2 3 7 2 4 4 3 6
+ 4 3 3 3 1 4 5 6 1 5 1 3 2 1 2 2 4 2 1 1 2 4 2 3 4 3 3 1 4 2 2 4 0 4 6 5 2
+ 3 4 4 2 2 0 1 3 4 1 3 1 2 3 7 1 2 4 3 2 3 3 7 3 6 6 1 2 3 3 5 0 3 4 6 5 4
+ 5 2 3 4 3 5 2 0 2 5 2 7 0 3 0 1 2 4 2 3 3 3 3 3 5 5 2 1 3 1]
+
+
+
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}data 3}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} start at k\PYZus{}3=1}
+
+\PY{n}{k\PYZus{}3}\PY{o}{=}\PY{l+m+mi}{1}
+
+\PY{n}{centroids} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{data3}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}초기 중심은 무게중심.}
+\PY{n}{distance} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data3} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}120개 거리만을 적은 벡터. 가장 가까운 것을 찾자.}
+\PY{n}{add\PYZus{}centroids}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{data3}\PY{p}{[}\PY{n}{distance}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}가장 가까운 것.}
+
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{n}{centroids}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{centroids}\PY{p}{,} \PY{n}{add\PYZus{}centroids}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}둘을 결합하여 중심 2개 집합 생성}
+    \PY{n}{D\PYZus{}old} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data3} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+        \PY{n}{closest} \PY{o}{=} \PY{n}{closest\PYZus{}centroid}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+        \PY{n}{ncentroids} \PY{o}{=} \PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+        \PY{k}{if}\PY{p}{(}\PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{\PYZca{}}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{o+ow}{or} \PY{n}{dist}\PY{p}{(}\PY{n}{ncentroids}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}print(\PYZdq{}The iteration number of data 1 is: \PYZdq{}, i)}
+            \PY{k}{break}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{centroids}\PY{o}{=}\PY{n}{new\PYZus{}centroids}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{closest}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+    \PY{n}{D\PYZus{}new} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{data3} \PY{o}{\PYZhy{}} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+    \PY{n}{error}\PY{o}{=}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{D\PYZus{}new}\PY{o}{\PYZhy{}}\PY{n}{D\PYZus{}old}\PY{p}{)}\PY{o}{/}\PY{n}{D\PYZus{}new}
+    \PY{k}{if}\PY{p}{(}\PY{p}{(}\PY{n}{D\PYZus{}new}\PY{o}{\PYZhy{}}\PY{n}{D\PYZus{}old}\PY{p}{)}\PY{o}{/}\PY{n}{D\PYZus{}new}\PY{o}{\PYZlt{}}\PY{n}{epsilon} \PY{o+ow}{or} \PY{n}{D\PYZus{}new}\PY{o}{==}\PY{l+m+mi}{0} \PY{o+ow}{or} \PY{n}{k\PYZus{}3}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{120}\PY{p}{)}\PY{p}{:}
+        \PY{k}{break}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{k\PYZus{}3}\PY{o}{=}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k\PYZus{}3}
+        \PY{n}{add\PYZus{}centroids}\PY{o}{=}\PY{n}{init\PYZus{}centroids}\PY{p}{(}\PY{n}{data3}\PY{p}{,} \PY{n}{k\PYZus{}3}\PY{p}{)}
+        \PY{k}{continue}
+        
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{centroids}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data 3 k\PYZhy{}means clustering result with error=10\PYZca{}\PYZhy{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The optimized number of clusters is: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{k\PYZus{}3}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The coordinates of centroids of data3 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{centroids}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The clusters of data3 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{closest}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+The optimized number of clusters is:
+ 4
+The coordinates of centroids of data3 is:
+ [[-48.4467347  -15.01285632]
+ [ 51.14102688  11.88825836]
+ [ 10.17670395 -40.78257506]
+ [-15.8484895   45.67220216]]
+The clusters of data3 is:
+ [2 1 0 2 2 0 1 1 1 1 0 3 2 2 0 2 1 3 1 0 3 1 3 3 3 1 1 2 2 3 3 3 3 3 2 0 0
+ 0 0 2 3 1 3 1 2 1 1 0 2 3 2 2 1 1 1 1 2 1 0 2 2 0 3 1 2 2 1 1 0 1 2 2 2 2
+ 2 1 2 2 1 3 1 0 0 0 2 0 1 1 3 1 2 0 0 0 1 1 1 3 3 1 0 3 2 1 3 2 1 3 2 1 1
+ 0 1 3 2 3 2 1 1 2 3 1 0 1 1 3 2 2 2 2 1 3 2 0 1 2 2 2 2 1 3 2 0 1 3 0 2 2
+ 2 1 3 1 3 3 1 3 3 3 1 1 1 0 0 0 0 2 2 3 2 3 1 0 0 3 3 2 2 0 2 2 3 2 1 3 3
+ 1 1 3 2 0 3 2 2 3 3 1 1 1 1 1]
+
+
+
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}3. SVM}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{GridSearchCV}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{svm} \PY{k}{import} \PY{n}{SVC}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{decomposition} \PY{k}{import} \PY{n}{PCA}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{accuracy\PYZus{}score}
+
+\PY{c+c1}{\PYZsh{}keras libary에서 MNIST dataset을 다운받는다.}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k}{import} \PY{n}{mnist}
+\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)} \PY{o}{=} \PY{n}{mnist}\PY{o}{.}\PY{n}{load\PYZus{}data}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}60000 by 28 by 28을 데이터처리를 위해 60000 by 28로 reshape한다.}
+\PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{x\PYZus{}train}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{60000}\PY{p}{,} \PY{l+m+mi}{784}\PY{p}{)}
+\PY{n}{x\PYZus{}test} \PY{o}{=} \PY{n}{x\PYZus{}test}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{10000}\PY{p}{,} \PY{l+m+mi}{784}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} normalize를 위해 나눗셈이 필요하고, 이를 위해서는 int형 대신 float 형을 사용.}
+\PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{x\PYZus{}train}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{x\PYZus{}test} \PY{o}{=} \PY{n}{x\PYZus{}test}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Scale the data to lie between \PYZhy{}1 to 1(SVM ppt 참조)}
+\PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{x\PYZus{}train} \PY{o}{/} \PY{l+m+mf}{255.0}\PY{o}{*}\PY{l+m+mi}{100} \PY{o}{\PYZhy{}} \PY{l+m+mi}{50}
+\PY{n}{x\PYZus{}test} \PY{o}{=} \PY{n}{x\PYZus{}test} \PY{o}{/} \PY{l+m+mf}{255.0}\PY{o}{*}\PY{l+m+mi}{100} \PY{o}{\PYZhy{}} \PY{l+m+mi}{50}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train samples}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test samples}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}I one hot encoding step.}
+\PY{n}{y\PYZus{}train} \PY{o}{=}\PY{n}{y\PYZus{}train} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2}
+\PY{n}{y\PYZus{}test} \PY{o}{=}\PY{n}{y\PYZus{}test} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2}
+
+\PY{c+c1}{\PYZsh{} PCA}
+\PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+\PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{)}
+\PY{n}{x\PYZus{}test} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}매개변수 gamma와 C의 최적값을 찾기 위해 Gridsearchcv 이용}
+\PY{n}{svm} \PY{o}{=} \PY{n}{SVC}\PY{p}{(}\PY{p}{)}
+\PY{n}{parameters} \PY{o}{=} \PY{p}{[}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kernel}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rbf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{1e\PYZhy{}3}\PY{p}{,} \PY{l+m+mf}{1e\PYZhy{}4}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Grid search}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{grid} \PY{o}{=} \PY{n}{GridSearchCV}\PY{p}{(}\PY{n}{svm}\PY{p}{,} \PY{n}{parameters}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Grid.fit}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{grid}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{7000}\PY{p}{]}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{7000}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}grid search learning the best parameters}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Grid done}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n+nb}{print} \PY{p}{(}\PY{n}{grid}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}훈련 학습}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{training svm}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{best\PYZus{}svm} \PY{o}{=} \PY{n}{grid}\PY{o}{.}\PY{n}{best\PYZus{}estimator\PYZus{}}
+\PY{n}{best\PYZus{}svm}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x\PYZus{}train} \PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{svm done}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Testing}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{score: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{best\PYZus{}svm}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{,}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+60000 train samples
+10000 test samples
+Grid search
+Grid.fit
+Fitting 3 folds for each of 8 candidates, totalling 24 fits
+[CV] C=1, gamma=0.001, kernel=rbf {\ldots}
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}dnrlf\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}sklearn\textbackslash{}model\_selection\textbackslash{}\_split.py:1978: FutureWarning: The default
+value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to
+silence this warning.
+  warnings.warn(CV\_WARNING, FutureWarning)
+[Parallel(n\_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[CV] {\ldots} C=1, gamma=0.001, kernel=rbf, score=0.509, total=   6.0s
+[CV] C=1, gamma=0.001, kernel=rbf {\ldots}
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[Parallel(n\_jobs=1)]: Done   1 out of   1 | elapsed:    5.9s remaining:    0.0s
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[CV] {\ldots} C=1, gamma=0.001, kernel=rbf, score=0.508, total=   5.5s
+[CV] C=1, gamma=0.001, kernel=rbf {\ldots}
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[Parallel(n\_jobs=1)]: Done   2 out of   2 | elapsed:   11.4s remaining:    0.0s
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[CV] {\ldots} C=1, gamma=0.001, kernel=rbf, score=0.508, total=   5.8s
+[CV] C=1, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1, gamma=0.0001, kernel=rbf, score=0.592, total=   5.3s
+[CV] C=1, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1, gamma=0.0001, kernel=rbf, score=0.596, total=   5.2s
+[CV] C=1, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1, gamma=0.0001, kernel=rbf, score=0.594, total=   4.7s
+[CV] C=10, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=10, gamma=0.001, kernel=rbf, score=0.509, total=   4.9s
+[CV] C=10, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=10, gamma=0.001, kernel=rbf, score=0.508, total=   4.9s
+[CV] C=10, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=10, gamma=0.001, kernel=rbf, score=0.508, total=   4.9s
+[CV] C=10, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=10, gamma=0.0001, kernel=rbf, score=0.597, total=   4.9s
+[CV] C=10, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=10, gamma=0.0001, kernel=rbf, score=0.604, total=   5.2s
+[CV] C=10, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=10, gamma=0.0001, kernel=rbf, score=0.600, total=   5.0s
+[CV] C=100, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=100, gamma=0.001, kernel=rbf, score=0.509, total=   5.1s
+[CV] C=100, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=100, gamma=0.001, kernel=rbf, score=0.508, total=   5.2s
+[CV] C=100, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=100, gamma=0.001, kernel=rbf, score=0.508, total=   5.1s
+[CV] C=100, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=100, gamma=0.0001, kernel=rbf, score=0.597, total=   4.9s
+[CV] C=100, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=100, gamma=0.0001, kernel=rbf, score=0.604, total=   4.9s
+[CV] C=100, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=100, gamma=0.0001, kernel=rbf, score=0.600, total=   4.8s
+[CV] C=1000, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1000, gamma=0.001, kernel=rbf, score=0.509, total=   4.9s
+[CV] C=1000, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1000, gamma=0.001, kernel=rbf, score=0.508, total=   5.1s
+[CV] C=1000, gamma=0.001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1000, gamma=0.001, kernel=rbf, score=0.508, total=   5.5s
+[CV] C=1000, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1000, gamma=0.0001, kernel=rbf, score=0.597, total=   5.0s
+[CV] C=1000, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1000, gamma=0.0001, kernel=rbf, score=0.604, total=   4.9s
+[CV] C=1000, gamma=0.0001, kernel=rbf {\ldots}
+[CV] {\ldots} C=1000, gamma=0.0001, kernel=rbf, score=0.600, total=   4.7s
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[Parallel(n\_jobs=1)]: Done  24 out of  24 | elapsed:  2.0min finished
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Grid done
+\{'C': 10, 'gamma': 0.0001, 'kernel': 'rbf'\}
+training svm
+svm done
+Testing
+score:  0.6283
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}4 MLP}
+\PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{python}\PY{n+nn}{.}\PY{n+nn}{framework} \PY{k}{import} \PY{n}{ops}
+\PY{n}{ops}\PY{o}{.}\PY{n}{reset\PYZus{}default\PYZus{}graph}\PY{p}{(}\PY{p}{)}
+\PY{k+kn}{import} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k}{import} \PY{n}{mnist}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k}{import} \PY{n}{Sequential}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k}{import} \PY{n}{Dense}\PY{p}{,} \PY{n}{Dropout}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{optimizers} \PY{k}{import} \PY{n}{RMSprop}
+
+\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{128} \PY{c+c1}{\PYZsh{}batch : 나누어진 dataset이고 batch\PYZus{}size는 한 번의 batch마다 주는 데이터 샘폴의 size를 의미한다.}
+\PY{n}{num\PYZus{}classes} \PY{o}{=} \PY{l+m+mi}{10} \PY{c+c1}{\PYZsh{}MNIST는 0부터 9까지 10개의 카테고리를 가지므로 10으로 둔다.}
+\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{20} \PY{c+c1}{\PYZsh{}1 epoch : 신경망에서 전체 dataset 학습을 한 번 완료. 즉 각 퍼셉트론 간 w를 계산하는 것이 한 세션 완료.}
+
+\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)} \PY{o}{=} \PY{n}{mnist}\PY{o}{.}\PY{n}{load\PYZus{}data}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}데이터 download 하고 각각 항목에 저장.}
+\PY{c+c1}{\PYZsh{}x\PYZus{}train, x\PYZus{}test에는 각각 60000 by 28 * 28 , 10000 by 28 * 28}
+\PY{c+c1}{\PYZsh{}y\PYZus{}train, y\PYZus{}test에는 각각 60000, 100000 개의 label 저장.}
+
+\PY{c+c1}{\PYZsh{}위에서 다운받은 MNIST data는 60000 by 28 by 28 이다. 처리를 위해 60000 by 784 by 1로 만들기 위해 다음을 이용한다.}
+\PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{x\PYZus{}train}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}\PYZhy{}1은 차원을 줄이는 역할.}
+\PY{n}{x\PYZus{}test} \PY{o}{=} \PY{n}{x\PYZus{}test}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}normalizing process}
+\PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{x\PYZus{}train}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}int type이면 나누는데 오류가 발생하므로 float type으로 바꾸어준다.}
+\PY{n}{x\PYZus{}test} \PY{o}{=} \PY{n}{x\PYZus{}test}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{x\PYZus{}train} \PY{o}{/}\PY{o}{=} \PY{l+m+mi}{255} \PY{c+c1}{\PYZsh{}MNIST matrix는 0\PYZti{}255사이의 값을 element로 가지므로 255로 나누어 normalize한다.}
+\PY{n}{x\PYZus{}test} \PY{o}{/}\PY{o}{=} \PY{l+m+mi}{255}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train samples}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test samples}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 신경망을 구현하기 위해 one\PYZhy{}hot encoding하는 과정.}
+\PY{c+c1}{\PYZsh{}\PYZsh{}one\PYZhy{}hot encoding : data, label에 해당되는 index만 1로, 나머지는 0으로 단순화하는 자연어 처리과정.}
+\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{utils}\PY{o}{.}\PY{n}{to\PYZus{}categorical}\PY{p}{(}\PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{p}{)}
+\PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{utils}\PY{o}{.}\PY{n}{to\PYZus{}categorical}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}이제 keras 내장함수를 이용해 relu activation function을 활용해 MLP를 구현.}
+\PY{c+c1}{\PYZsh{}hidden layer=2개}
+\PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{512}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{784}\PY{p}{,}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}784개 입력해서 512개 출력}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}For fast modelling and prevent overfitting.dropout 0.2는 randomly하게 연결된 뉴런들을 0.2만큼 drop out한다는 뜻이다.}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{512}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}512개 출력}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{n}{num\PYZus{}classes}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}10개 출력}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{categorical\PYZus{}crossentropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{optimizer}\PY{o}{=}\PY{n}{RMSprop}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{n}{epochs}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{validation\PYZus{}data}\PY{o}{=}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{score} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{evaluate}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} \PY{c+c1}{\PYZsh{}verbose=0 로깅 없음}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test loss:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{score}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test accuracy:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{score}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+60000 train samples
+10000 test samples
+Model: "sequential"
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Layer (type)                 Output Shape              Param \#
+=================================================================
+dense (Dense)                (None, 512)               401920
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout (Dropout)            (None, 512)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_1 (Dense)              (None, 512)               262656
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_1 (Dropout)          (None, 512)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_2 (Dense)              (None, 10)                5130
+=================================================================
+Total params: 669,706
+Trainable params: 669,706
+Non-trainable params: 0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Train on 60000 samples, validate on 10000 samples
+Epoch 1/20
+60000/60000 [==============================] - 18s 302us/sample - loss: 0.2447 -
+accuracy: 0.9237 - val\_loss: 0.1264 - val\_accuracy: 0.9603
+Epoch 2/20
+60000/60000 [==============================] - 16s 265us/sample - loss: 0.1030 -
+accuracy: 0.9685 - val\_loss: 0.0853 - val\_accuracy: 0.9751
+Epoch 3/20
+60000/60000 [==============================] - 17s 288us/sample - loss: 0.0758 -
+accuracy: 0.9778 - val\_loss: 0.0833 - val\_accuracy: 0.9776
+Epoch 4/20
+60000/60000 [==============================] - 17s 287us/sample - loss: 0.0609 -
+accuracy: 0.9815 - val\_loss: 0.0783 - val\_accuracy: 0.9786
+Epoch 5/20
+60000/60000 [==============================] - 17s 280us/sample - loss: 0.0522 -
+accuracy: 0.9841 - val\_loss: 0.0727 - val\_accuracy: 0.9810
+Epoch 6/20
+60000/60000 [==============================] - 17s 280us/sample - loss: 0.0450 -
+accuracy: 0.9867 - val\_loss: 0.0773 - val\_accuracy: 0.9801
+Epoch 7/20
+60000/60000 [==============================] - 17s 280us/sample - loss: 0.0400 -
+accuracy: 0.9880 - val\_loss: 0.0803 - val\_accuracy: 0.9812
+Epoch 8/20
+60000/60000 [==============================] - 17s 276us/sample - loss: 0.0353 -
+accuracy: 0.9898 - val\_loss: 0.0817 - val\_accuracy: 0.9830
+Epoch 9/20
+60000/60000 [==============================] - 17s 285us/sample - loss: 0.0311 -
+accuracy: 0.9909 - val\_loss: 0.0857 - val\_accuracy: 0.9822
+Epoch 10/20
+60000/60000 [==============================] - 17s 287us/sample - loss: 0.0279 -
+accuracy: 0.9917 - val\_loss: 0.0949 - val\_accuracy: 0.9837
+Epoch 11/20
+60000/60000 [==============================] - 17s 284us/sample - loss: 0.0279 -
+accuracy: 0.9919 - val\_loss: 0.1037 - val\_accuracy: 0.9822
+Epoch 12/20
+60000/60000 [==============================] - 17s 278us/sample - loss: 0.0239 -
+accuracy: 0.9933 - val\_loss: 0.0983 - val\_accuracy: 0.9829
+Epoch 13/20
+60000/60000 [==============================] - 18s 294us/sample - loss: 0.0236 -
+accuracy: 0.9931 - val\_loss: 0.1016 - val\_accuracy: 0.9832
+Epoch 14/20
+60000/60000 [==============================] - 16s 271us/sample - loss: 0.0202 -
+accuracy: 0.9939 - val\_loss: 0.1044 - val\_accuracy: 0.9830
+Epoch 15/20
+60000/60000 [==============================] - 17s 282us/sample - loss: 0.0226 -
+accuracy: 0.9939 - val\_loss: 0.1041 - val\_accuracy: 0.9838
+Epoch 16/20
+60000/60000 [==============================] - 18s 301us/sample - loss: 0.0207 -
+accuracy: 0.9944 - val\_loss: 0.1126 - val\_accuracy: 0.9822
+Epoch 17/20
+60000/60000 [==============================] - 17s 276us/sample - loss: 0.0183 -
+accuracy: 0.9950 - val\_loss: 0.1079 - val\_accuracy: 0.9830
+Epoch 18/20
+60000/60000 [==============================] - 17s 277us/sample - loss: 0.0193 -
+accuracy: 0.9947 - val\_loss: 0.1296 - val\_accuracy: 0.9828
+Epoch 19/20
+60000/60000 [==============================] - 16s 266us/sample - loss: 0.0187 -
+accuracy: 0.9949 - val\_loss: 0.1311 - val\_accuracy: 0.9835
+Epoch 20/20
+60000/60000 [==============================] - 13s 218us/sample - loss: 0.0206 -
+accuracy: 0.9947 - val\_loss: 0.1226 - val\_accuracy: 0.9832
+Test loss: 0.12259161651833374
+Test accuracy: 0.9832
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
